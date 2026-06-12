@@ -3,524 +3,326 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Wiijump Digital Time-Logging System - Capstone</title>
+    <title>Wiijump Digital Time-Logging System</title>
     <style>
-        :root {
-            --primary: #5c2575;
-            --primary-light: #7b339b;
-            --accent: #ff7b00;
-            --dark: #1a151e;
-            --light: #f8f9fa;
-            --gray: #e9ecef;
-            --text-dark: #333;
-            --success: #28a745;
-            --warning: #ffc107;
-            --danger: #dc3545;
-        }
-
-        * {
-            box-sizing: border-box;
+        /* Modern Dark Theme Palette styled for Wiijump backend */
+        body {
+            font-family: 'Segoe UI', Roboto, Helvetica, sans-serif;
+            line-height: 1.6;
             margin: 0;
             padding: 0;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #0f172a;
+            color: #f8fafc;
         }
 
-        body {
-            background-color: var(--light);
-            color: var(--text-dark);
-            line-height: 1.6;
+        /* Navigation Header Bar */
+        nav {
+            background-color: #1e293b;
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 2px solid #a855f7; /* Purple accent branding */
+        }
+
+        nav .logo {
+            color: #f97316; /* Vibrant Orange branding */
+            font-size: 1.5rem;
+            font-weight: 800;
+            letter-spacing: 0.5px;
+        }
+
+        nav .logo span { color: #a855f7; }
+
+        .meta-info {
+            font-size: 0.85rem;
+            color: #94a3b8;
+            text-align: right;
         }
 
         header {
-            background: linear-gradient(135deg, var(--primary), var(--dark));
-            color: white;
-            padding: 40px 20px;
+            background: linear-gradient(135deg, #4c1d95, #0f172a);
             text-align: center;
-            border-bottom: 5px solid var(--accent);
+            padding: 3rem 2rem;
+            border-bottom: 4px solid #f97316;
         }
 
-        header h1 {
-            font-size: 2.2rem;
-            margin-bottom: 10px;
-        }
+        header h1 { margin: 0; font-size: 2.2rem; font-weight: 800; color: #ffffff; }
+        header p { font-size: 1.1rem; margin-top: 0.5rem; color: #cbd5e1; }
 
-        header p {
-            font-size: 1.1rem;
-            opacity: 0.9;
-        }
+        .container { max-width: 1200px; margin: 2rem auto; padding: 0 1.5rem; }
 
-        .meta-info {
-            margin-top: 20px;
-            font-size: 0.9rem;
-            display: flex;
-            justify-content: center;
-            gap: 20px;
-            flex-wrap: wrap;
-        }
-
-        .meta-info span {
-            background: rgba(255, 255, 255, 0.1);
-            padding: 5px 15px;
-            border-radius: 20px;
-        }
-
-        nav {
-            background: #fff;
-            position: sticky;
-            top: 0;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-            display: flex;
-            justify-content: center;
-            z-index: 1000;
-        }
-
-        nav a {
-            color: var(--primary);
-            text-decoration: none;
-            padding: 15px 20px;
-            font-weight: bold;
-            font-size: 0.9rem;
-            text-transform: uppercase;
-            transition: 0.3s;
-        }
-
-        nav a:hover {
-            background: var(--gray);
-            color: var(--accent);
-        }
-
-        .container {
-            max-width: 1200px;
-            margin: 30px auto;
-            padding: 0 20px;
-        }
-
-        section {
-            background: white;
-            padding: 30px;
-            margin-bottom: 30px;
-            border-radius: 8px;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
-        }
-
-        h2 {
-            color: var(--primary);
-            border-left: 5px solid var(--accent);
-            padding-left: 10px;
-            margin-bottom: 20px;
-        }
-
-        h3 {
-            margin: 20px 0 10px 0;
-            color: var(--primary-light);
-        }
-
-        p {
-            margin-bottom: 15px;
-            text-align: justify;
-        }
-
-        ul {
-            margin-bottom: 15px;
-            padding-left: 20px;
-        }
-
-        li {
-            margin-bottom: 5px;
-        }
-
-        /* System Interactive Demo Styles */
-        .demo-box {
-            border: 2px dashed var(--primary);
-            padding: 20px;
-            border-radius: 8px;
-            background: #fcf8ff;
-            margin-top: 20px;
-        }
-
-        .grid-2 {
+        /* Split-screen Dashboard Layout */
+        .dashboard-grid {
             display: grid;
-            grid-template-columns: 1fr 2fr;
-            gap: 20px;
+            grid-template-columns: 1fr;
+            gap: 2rem;
         }
 
-        @media (max-width: 768px) {
-            .grid-2 {
-                grid-template-columns: 1fr;
-            }
+        @media (min-width: 900px) {
+            .dashboard-grid { grid-template-columns: 350px 1fr; }
         }
 
-        form {
-            background: white;
-            padding: 20px;
-            border-radius: 6px;
-            border: 1px solid var(--gray);
-        }
-
-        .form-group {
-            margin-bottom: 15px;
-        }
-
-        label {
-            display: block;
-            margin-bottom: 5px;
-            font-weight: 6px;
-            font-size: 0.9rem;
-        }
-
-        input, select {
-            width: 100%;
-            padding: 10px;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-            font-size: 1rem;
-        }
-
-        button {
-            background: var(--primary);
-            color: white;
-            border: none;
-            padding: 12px 20px;
-            border-radius: 4px;
-            cursor: pointer;
-            font-weight: bold;
-            width: 100%;
-            transition: 0.3s;
-        }
-
-        button:hover {
-            background: var(--primary-light);
-        }
-
-        .dashboard-view {
-            background: white;
-            padding: 20px;
-            border-radius: 6px;
-            border: 1px solid var(--gray);
-        }
-
-        .stats {
-            display: flex;
-            gap: 15px;
-            margin-bottom: 20px;
-        }
-
-        .stat-card {
-            flex: 1;
-            background: var(--primary);
-            color: white;
-            padding: 15px;
-            border-radius: 6px;
-            text-align: center;
-        }
-
-        .stat-card h4 { font-size: 0.8rem; text-transform: uppercase; opacity: 0.8;}
-        .stat-card p { font-size: 1.8rem; font-weight: bold; margin: 0;}
-
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 10px;
-            font-size: 0.9rem;
-        }
-
-        th, td {
-            padding: 12px;
-            text-align: left;
-            border-bottom: 1px solid var(--gray);
-        }
-
-        th {
-            background-color: #f1f1f1;
-            color: var(--primary);
-        }
-
-        .badge {
-            padding: 5px 10px;
+        /* Form and Panel Containers */
+        .panel {
+            background: #1e293b;
+            padding: 2rem;
             border-radius: 12px;
-            font-size: 0.8rem;
-            font-weight: bold;
-            color: white;
+            border: 1px solid #334155;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.3);
+            height: fit-content;
         }
 
-        .badge-active { background-color: var(--success); }
-        .badge-warning { background-color: var(--warning); color: #333; }
-        .badge-expired { background-color: var(--danger); }
+        .panel h2 { color: #ffffff; font-size: 1.4rem; margin-top: 0; border-bottom: 2px solid #334155; padding-bottom: 0.5rem; }
+        
+        /* Interactive Input Styling */
+        label { display: block; margin-top: 1rem; margin-bottom: 0.25rem; color: #94a3b8; font-weight: 600; font-size: 0.9rem; }
+        input[type="text"], select {
+            width: 100%; padding: 0.75rem; background: #0f172a; border: 1px solid #475569;
+            color: white; border-radius: 6px; box-sizing: border-box; font-size: 1rem; margin-bottom: 0.5rem;
+        }
+        input[type="text"]:focus, select:focus { border-color: #a855f7; outline: none; }
 
         .privacy-box {
-            font-size: 0.8rem;
-            color: #666;
-            background: #eee;
-            padding: 10px;
-            border-radius: 4px;
-            margin-bottom: 15px;
-            height: 60px;
-            overflow-y: scroll;
-            border: 1px solid #ddd;
+            background: #0f172a; padding: 0.75rem; border-radius: 6px; border-left: 3px solid #eab308;
+            font-size: 0.8rem; color: #94a3b8; margin: 1rem 0; line-height: 1.4;
         }
 
-        footer {
-            background: var(--dark);
-            color: white;
-            text-align: center;
-            padding: 20px;
-            margin-top: 5px;
-            font-size: 0.9rem;
+        .btn {
+            width: 100%; padding: 0.85rem; border: none; border-radius: 6px; font-weight: bold;
+            font-size: 1rem; cursor: pointer; transition: background 0.2s; box-sizing: border-box;
         }
+        .btn-primary { background: #a855f7; color: white; }
+        .btn-primary:hover { background: #9333ea; }
+        .btn-secondary { background: #334155; color: #f8fafc; border: 1px solid #475569; margin-top: 1.5rem; }
+        .btn-secondary:hover { background: #475569; }
+
+        /* Analytical Telemetry Cards */
+        .metrics-row { display: flex; gap: 1rem; margin-bottom: 1.5rem; }
+        .metric-card {
+            flex: 1; padding: 1.25rem; border-radius: 8px; text-align: center; box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+        }
+        .bg-purple { background: #581c87; border: 1px solid #7e22ce; }
+        .bg-orange { background: #7c2d12; border: 1px solid #9a3412; }
+        .metric-card h3 { margin: 0; font-size: 0.85rem; color: #cbd5e1; text-transform: uppercase; letter-spacing: 0.5px; }
+        .metric-card p { margin: 0.5rem 0 0 0; font-size: 2rem; font-weight: bold; color: #fff; }
+
+        /* Data Tracked Session Table */
+        table { width: 100%; border-collapse: collapse; text-align: left; }
+        th, td { padding: 1rem; border-bottom: 1px solid #334155; }
+        th { background-color: #0f172a; color: #a855f7; font-weight: 600; }
+        .empty-row { text-align: center; color: #64748b; padding: 2rem; }
+
+        /* Dynamic Badges */
+        .badge { padding: 0.25rem 0.5rem; border-radius: 4px; font-size: 0.8rem; font-weight: bold; }
+        .badge-active { background: rgba(34, 197, 94, 0.2); color: #4ade80; }
+        .badge-expired { background: rgba(239, 68, 68, 0.2); color: #f87171; }
     </style>
 </head>
 <body>
 
-    <header>
-        <h1>Design and Implementation of a Digital Time-Logging System</h1>
-        <p>Enhanced Customer Session Tracking at Wiijump Philippines</p>
-        <div class="meta-info">
-            <span><strong>Researchers:</strong> Danielle John Cruz, Geremilo Milky, Maitum Palle</span>
-            <span><strong>Section:</strong> OLCA333A010</span>
-            <span><strong>Professor:</strong> Mr. Jerico Vilog</span>
-        </div>
-    </header>
-
+    <!-- Top Navigation Information Grid -->
     <nav>
-        <a href="#abstract">Abstract</a>
-        <a href="#introduction">Introduction</a>
-        <a href="#methodology">Methodology</a>
-        <a href="#demo">Live App Demo</a>
+        <div class="logo">Wiijump<span>System</span></div>
+        <div class="meta-info">
+            <strong>Researchers:</strong> Cruz, Milky, Palle | <strong>Section:</strong> OLCA333A010
+        </div>
     </nav>
 
+    <!-- Header Capstone Scope Identifier -->
+    <header>
+        <h1>Digital Time-Logging & Session Tracking System</h1>
+        <p>Centralized Venue Management Architecture Prototype — Eliminating Manual Sticker Tracking</p>
+    </header>
+
     <div class="container">
-        
-        <!-- Abstract Section -->
-        <section id="abstract">
-            <h2>Abstract</h2>
-            <p>Manual time-tracking systems often lack the precision and real-time visibility required for efficient venue management. This study proposes the design and implementation of a centralized, web-based digital time-logging system to automate customer session tracking. The system requires users to input contact details upon entry, enabling seamless monitoring of customer sessions. Furthermore, the system provides stakeholders with a comprehensive administrative dashboard for real-time occupancy monitoring and the ability to generate and export daily analytical reports containing comprehensive customer logs. By digitizing these processes, the proposed solution aims to optimize facility resource allocation, improve customer experience through automated communication, and streamline operational decision-making for management.</p>
-            <p><strong>Keywords:</strong> Web-based Information System, Database Management System (DBMS), Real-time Occupancy Analytics, Data-Driven Decision Making, Administrative Dashboard.</p>
-        </section>
-
-        <!-- Introduction Section -->
-        <section id="introduction">
-            <h2>1. Introduction</h2>
-            <h3>1.1 Background and Motivation</h3>
-            <p>Currently, Wiijump Philippines relies on a manual, paper-based workflow using stickers and tickets to track customer sessions, which creates a disconnected information flow where attendance records and POS sales data must be tallied manually only after the business day concludes. This dependency on manual entry introduces significant risks regarding data integrity and prevents management from accessing real-time occupancy analytics, effectively blinding them to operational inefficiencies as they happen. This project is critical as it facilitates a transition from reactive record-keeping to proactive, data-driven management by centralizing customer logs and automating session monitoring, ultimately replacing error-prone manual labor with a streamlined digital system that enables real-time decision-making, better resource allocation, and improved operational efficiency.</p>
+        <div class="dashboard-grid">
             
-            <h3>1.2 Problem Statement</h3>
-            <p>Wiijump Philippines struggles with operational inefficiencies caused by manual, paper-based time-logging, leading to data reconciliation gaps and a lack of real-time occupancy monitoring. The organization faces challenges including inaccurate daily attendance tallies, reliance on manual ticket counting for inventory, and an inability to proactively manage customer session times, resulting in potential overcrowding and inconsistent customer service.</p>
-            
-            <h3>1.3 Scope and Limitations</h3>
-            <p><strong>Scope:</strong> The system covers customer registration, session duration tracking, and administrative reporting. It is a web-based information system accessible via any standard device browser.</p>
-            <p><strong>Limitations:</strong> The system does not include a payment gateway and does not utilize hardware sensors (such as turnstiles or RFID gates); it relies on staff or client data input configuration.</p>
-        </section>
+            <!-- Left Panel: Client Check-In Intake Module -->
+            <div class="panel">
+                <h2>Client Session Check-In</h2>
+                <form id="intake-form">
+                    <label for="client-name">Full Name *</label>
+                    <input type="text" id="client-name" placeholder="e.g. Juan Dela Cruz" required>
 
-        <!-- Methodology Section -->
-        <section id="methodology">
-            <h2>2. Methodology & Requirements</h2>
-            <p>The system utilizes an <strong>Agile Development Framework</strong> to enable component iteration across core building blocks.</p>
-            
-            <h3>Functional Requirements (FR)</h3>
-            <ul>
-                <li>User session intake registration logs.</li>
-                <li>Real-time automated status calculations.</li>
-                <li>Administrative telemetry analytics overview dashboard.</li>
-                <li>Exportable logs capability (.CSV / Excel framework emulation).</li>
-            </ul>
+                    <label for="client-contact">Contact Number *</label>
+                    <input type="text" id="client-contact" placeholder="e.g. 09123456789" required>
 
-            <h3>Legal Compliance</h3>
-            <p>In accordance with the <strong>Philippine Data Privacy Act of 2012 (RA 10173)</strong>, the intake system includes active consent architecture frameworks protecting customer PII logs from over-retention.</p>
-        </section>
+                    <label for="session-duration">Session Plan *</label>
+                    <select id="session-duration">
+                        <option value="1">1 Minute (Demo Quick Mode)</option>
+                        <option value="60">1 Hour Session</option>
+                        <option value="120">2 Hour Session</option>
+                    </select>
 
-        <!-- Interactive Prototype Demo Section -->
-        <section id="demo">
-            <h2>3. Interactive Prototype Dashboard</h2>
-            <p>Below is a working UI preview of the proposed system architecture. You can simulate checking in clients and watch the tracking metrics respond live.</p>
-            
-            <div class="demo-box">
-                <div class="grid-2">
-                    <!-- Check-in Form Block -->
-                    <div>
-                        <h3>Client Check-In Intake</h3>
-                        <form id="checkInForm">
-                            <div class="form-group">
-                                <label for="custName">Full Name</label>
-                                <input type="text" id="custName" placeholder="e.g. Juan Dela Cruz" required>
-                            </div>
-                            <div class="form-group">
-                                <label for="custContact">Contact Number</label>
-                                <input type="tel" id="custContact" placeholder="e.g. 09123456789" required>
-                            </div>
-                            <div class="form-group">
-                                <label for="sessionDuration">Session Duration</label>
-                                <select id="sessionDuration">
-                                    <option value="1">1 Minute (Demo Mode)</option>
-                                    <option value="60">1 Hour Session</option>
-                                    <option value="120">2 Hour Session</option>
-                                </select>
-                            </div>
-                            
-                            <label>Data Privacy Notice</label>
-                            <div class="privacy-box">
-                                Wiijump Philippines is committed to protecting your personal data in full compliance with RA 10173 (Data Privacy Act of 2012). Your records are collected purely for session monitoring parameters and will be safely purged routinely.
-                            </div>
-                            
-                            <button type="submit">Complete Intake & Start Session</button>
-                        </form>
+                    <div class="privacy-box">
+                        <strong>Data Privacy Compliance Notice (RA 10173):</strong> In compliance with the Philippine Data Privacy Act of 2012, PII gathered here is encrypted strictly for active timing bounds and auto-purged securely.
                     </div>
 
-                    <!-- Live Analytics Dashboard Block -->
-                    <div class="dashboard-view">
-                        <h3>Administrative Live Monitor</h3>
-                        <div class="stats">
-                            <div class="stat-card">
-                                <h4>Current Occupancy</h4>
-                                <p id="totalJumpers">0</p>
-                            </div>
-                            <div class="stat-card" style="background-color: var(--accent);">
-                                <h4>Total Logs Today</h4>
-                                <p id="totalLogs">0</p>
-                            </div>
-                        </div>
+                    <button type="submit" class="btn btn-primary">Complete Intake & Start Session</button>
+                </form>
+            </div>
 
-                        <h4>Active Tracked Sessions</h4>
-                        <div style="overflow-x: auto;">
-                            <table id="sessionTable">
-                               <thead>
-                                   <tr>
-                                       <th>Name</th>
-                                       <th>Duration</th>
-                                       <th>Time Left</th>
-                                       <th>Status</th>
-                                   </tr>
-                               </thead>
-                               <tbody>
-                                   <!-- Dynamic Rows Injecting via JS Logic -->
-                                   <tr id="emptyRow"><td colspan="4" style="text-align: center; color: #888;">No active sessions found. Add a visitor using the intake form.</td></tr>
-                               </tbody>
-                            </table>
-                        </div>
-                        <button id="exportBtn" style="margin-top: 15px; background: #333;">Mock Report Generation (.CSV Export)</button>
+            <!-- Right Panel: Administrative Real-Time Telemetry Monitor -->
+            <div class="panel">
+                <h2>Administrative Live Dashboard Monitor</h2>
+                
+                <div class="metrics-row">
+                    <div class="metric-card bg-purple">
+                        <h3>Current Live Occupancy</h3>
+                        <p id="metric-occupancy">0</p>
+                    </div>
+                    <div class="metric-card bg-orange">
+                        <h3>Total Logs Registered Today</h3>
+                        <p id="metric-total-logs">0</p>
                     </div>
                 </div>
+
+                <h3>Active Jump Court Sessions</h3>
+                <div style="overflow-x: auto;">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Customer Name</th>
+                                <th>Plan Duration</th>
+                                <th>Time Remaining</th>
+                                <th>Runtime Status</th>
+                            </tr>
+                        </thead>
+                        <tbody id="session-table-body">
+                            <tr id="no-session-row">
+                                <td colspan="4" class="empty-row">No active customer logs found on the floor. Utilize the Intake module to initialize sessions.</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <button class="btn btn-secondary" onclick="exportToCSV()">Mock Report Generation (.CSV Export)</button>
             </div>
-        </section>
+
+        </div>
     </div>
 
-    <footer>
-        <p>&copy; 2026 Wiijump Philippines Digital Time-Logging Project Group. All Rights Reserved.</p>
-    </footer>
-
+    <!-- Live Execution Logic Engine -->
     <script>
-        // Array to hold active state session objects
-        let sessions = [];
-        let totalLogCounter = 0;
+        let globalSessionStorage = [];
+        let historicalTotalLogsCount = 0;
 
-        const form = document.getElementById('checkInForm');
-        const sessionTableBody = document.querySelector('#sessionTable tbody');
-        const totalJumpersEl = document.getElementById('totalJumpers');
-        const totalLogsEl = document.getElementById('totalLogs');
-        const emptyRow = document.getElementById('emptyRow');
-
-        form.addEventListener('submit', function(e) {
+        // Core Form Control Interceptor
+        document.getElementById('intake-form').addEventListener('submit', function(e) {
             e.preventDefault();
 
-            const name = document.getElementById('custName').value;
-            const contact = document.getElementById('custContact').value;
-            const durationMins = parseInt(document.getElementById('sessionDuration').value);
-            
-            // Calculate timestamps
-            const startTime = new Date();
-            const endTime = new Date(startTime.getTime() + durationMins * 60000);
+            const nameInput = document.getElementById('client-name').value.trim();
+            const contactInput = document.getElementById('client-contact').value.trim();
+            const minutesDuration = parseInt(document.getElementById('session-duration').value);
 
-            // Structure Object Entity
-            const newSession = {
-                id: Date.now(),
-                name: name,
-                contact: contact,
-                duration: durationMins,
-                endTime: endTime,
-                status: 'Active'
+            if (!nameInput || !contactInput) return;
+
+            // Generate localized timestamp configuration values
+            const creationTime = new Date();
+            const terminationTime = new Date(creationTime.getTime() + minutesDuration * 60000);
+
+            const recordObject = {
+                id: 'WJ-' + Math.floor(1000 + Math.random() * 9000),
+                name: nameInput,
+                contact: contactInput,
+                durationLabel: minutesDuration === 1 ? "1 Minute Demo" : `${minutesDuration / 60} Hour(s)`,
+                endTime: terminationTime,
+                expiredFlag: false
             };
 
-            sessions.push(newSession);
-            totalLogCounter++;
-            
-            // Reset input values
-            form.reset();
-            updateDashboard();
+            globalSessionStorage.push(recordObject);
+            historicalTotalLogsCount++;
+
+            // Clean input boxes instantly
+            document.getElementById('client-name').value = '';
+            document.getElementById('client-contact').value = '';
+
+            refreshDashboardMetrics();
         });
 
-        function updateDashboard() {
-            // Filter out internal view rows
-            if(sessions.length === 0) {
-                emptyRow.style.display = '';
-                totalJumpersEl.textContent = '0';
-                totalLogsEl.textContent = totalLogCounter;
-                return;
+        // Pipeline Synchronization Display Engine
+        function refreshDashboardMetrics() {
+            const tableBody = document.getElementById('session-table-body');
+            const placeholderRow = document.getElementById('no-session-row');
+            
+            // Wipe variable row sets safely
+            const dynamicRows = tableBody.querySelectorAll('.live-data-row');
+            dynamicRows.forEach(row => row.remove());
+
+            let runningActiveOccupancyCounter = 0;
+
+            if (globalSessionStorage.length === 0) {
+                placeholderRow.style.display = 'table-row';
             } else {
-                emptyRow.style.display = 'none';
+                placeholderRow.style.display = 'none';
+
+                globalSessionStorage.forEach(session => {
+                    if (!session.expiredFlag) runningActiveOccupancyCounter++;
+
+                    const rowHtml = document.createElement('tr');
+                    rowHtml.className = 'live-data-row';
+
+                    // Compute dynamic timer fields remaining live
+                    const timeWindowRemaining = session.endTime - new Date();
+                    let stringTimerOutput = "00:00";
+                    let stateBadgeHtml = `<span class="badge badge-active">ACTIVE</span>`;
+
+                    if (timeWindowRemaining > 0) {
+                        const totalSecsRemaining = Math.floor(timeWindowRemaining / 1000);
+                        const displayMins = Math.floor(totalSecsRemaining / 60);
+                        const displaySecs = totalSecsRemaining % 60;
+                        stringTimerOutput = `${displayMins.toString().padStart(2, '0')}:${displaySecs.toString().padStart(2, '0')}`;
+                    } else {
+                        session.expiredFlag = true;
+                        stringTimerOutput = "00:00";
+                        stateBadgeHtml = `<span class="badge badge-expired">EXPIRED (TIME OUT)</span>`;
+                    }
+
+                    rowHtml.innerHTML = `
+                        <td><strong>${session.name}</strong><br><small style="color:#64748b">${session.id}</small></td>
+                        <td>${session.durationLabel}</td>
+                        <td style="font-family:monospace; font-size:1.1rem; color: ${session.expiredFlag ? '#f87171' : '#f59e0b'}">${stringTimerOutput}</td>
+                        <td>${stateBadgeHtml}</td>
+                    `;
+                    tableBody.appendChild(rowHtml);
+                });
             }
 
-            // Redraw table context profiles dynamically
-            const existingRows = sessionTableBody.querySelectorAll('tr:not(#emptyRow)');
-            existingRows.forEach(row => row.remove());
-
-            let activeCount = 0;
-
-            sessions.forEach(session => {
-                const now = new Date();
-                const diffMs = session.endTime - now;
-                let timeLeftStr = "";
-                let badgeClass = "badge-active";
-
-                if (diffMs <= 0) {
-                    session.status = "Expired";
-                    timeLeftStr = "00:00 - Time Up";
-                    badgeClass = "badge-expired";
-                } else {
-                    activeCount++;
-                    const diffMins = Math.floor(diffMs / 60000);
-                    const diffSecs = Math.floor((diffMs % 60000) / 1000);
-                    timeLeftStr = `${diffMins}m ${diffSecs}s left`;
-                    
-                    if(diffMins < 1 && session.duration > 1 || (diffMs < 15000 && session.duration === 1)) {
-                        badgeClass = "badge-warning";
-                        session.status = "Warning";
-                    }
-                }
-
-                const tr = document.createElement('tr');
-                tr.innerHTML = `
-                    <td><strong>${session.name}</strong><br><small style="color:#666">${session.contact}</small></td>
-                    <td>${session.duration} Min(s)</td>
-                    <td>${timeLeftStr}</td>
-                    <td><span class="badge ${badgeClass}">${session.status}</span></td>
-                `;
-                sessionTableBody.appendChild(tr);
-            });
-
-            totalJumpersEl.textContent = activeCount;
-            totalLogsEl.textContent = totalLogCounter;
+            // Sync static counters
+            document.getElementById('metric-occupancy').innerText = runningActiveOccupancyCounter;
+            document.getElementById('metric-total-logs').innerText = historicalTotalLogsCount;
         }
 
-        // Run UI ticker loop calculation updates every 1 second
-        setInterval(updateDashboard, 1000);
+        // Keep counting down every 1000ms
+        setInterval(refreshDashboardMetrics, 1000);
 
-        // Simulated export script
-        document.getElementById('exportBtn').addEventListener('click', function() {
-            if(sessions.length === 0) {
-                alert("No operational logs available to compile data exports yet.");
+        // Core CSV Export Generation Simulator
+        function exportToCSV() {
+            if (globalSessionStorage.length === 0) {
+                alert("The administrative log registry database is currently empty. Input active records first.");
                 return;
             }
-            let csvContent = "data:text/csv;charset=utf-8,Name,Contact,Duration(Mins),Status\n";
-            sessions.forEach(s => {
-                csvContent += `${s.name},${s.contact},${s.duration},${s.status}\n`;
+
+            let textBuilderCSV = "Session ID,Customer Name,Contact Number,Duration Structure,Completion Status\n";
+            globalSessionStorage.forEach(log => {
+                const statusStr = log.expiredFlag ? "EXPIRED" : "ACTIVE MONITORING";
+                textBuilderCSV += `"${log.id}","${log.name}","${log.contact}","${log.durationLabel}","${statusStr}"\n`;
             });
-            const encodedUri = encodeURI(csvContent);
-            const link = document.createElement("a");
-            link.setAttribute("href", encodedUri);
-            link.setAttribute("download", `Wiijump_Daily_Log_Report.csv`);
-            document.body.appendChild(link);
-            link.click();
-            document.body.removeChild(link);
-        });
+
+            // Stream context down to client filesystem dynamically
+            const fileDataBlob = new Blob([textBuilderCSV], { type: 'text/csv;charset=utf-8;' });
+            const temporaryAnchorElement = document.createElement("a");
+            const structuralUrl = URL.createObjectURL(fileDataBlob);
+            
+            temporaryAnchorElement.setAttribute("href", structuralUrl);
+            temporaryAnchorElement.setAttribute("download", `Wiijump_SessionReport_2026.csv`);
+            temporaryAnchorElement.style.visibility = 'hidden';
+            
+            document.body.appendChild(temporaryAnchorElement);
+            temporaryAnchorElement.click();
+            document.body.removeChild(temporaryAnchorElement);
+        }
     </script>
 </body>
 </html>
