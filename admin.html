@@ -334,7 +334,36 @@
                 <td><span class="status-badge status-warn">USER_LOG</span></td>
                 <td>${userMsg}</td>
             `;
+            
+<nav>
+    <div class="logo">Wiijump <span>Admin Backend Monitor</span></div>
+    <div>
+        <button onclick="triggerLogout()" style="background: #ef4444; color: white; border: none; padding: 0.5rem 1rem; border-radius: 4px; font-weight: bold; cursor: pointer;">Terminate Session (Logout)</button>
+    </div>
+</nav>
+            // Check if the server returns a 401 Unauthorized status, and redirect if needed
+async function pullServerData() {
+    const res = await fetch('/api/sessions/live');
+    
+    if (res.status === 401) {
+        // Session expired or invalid, boot back out to the gateway lock
+        window.location.href = '/login.html';
+        return;
+    }
+    
+    if (!res.ok) return;
+    const data = await res.json();
+    
+    // ... [Keep your current table row loop logic exactly as it is] ...
+}
 
+// Function to securely end the administrative session
+async function triggerLogout() {
+    const res = await fetch('/api/logout', { method: 'POST' });
+    if (res.ok) {
+        window.location.href = '/login.html';
+    }
+}
             // Insert matching row inside document tree hierarchy
             tableBody.insertBefore(newRow, tableBody.firstChild);
             document.getElementById('log-message').value = ""; // Clean context field entry container
