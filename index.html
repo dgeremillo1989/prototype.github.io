@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WiiJump - Capstone Project</title>
+    <style>
+        /* Base Theme Styles */
+        body {
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 0;
+            background-color: #0f172a; 
+            color: #f8fafc;
+        }
+
+        /* Navigation */
+        nav {
+            background-color: #1e293b;
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 2px solid #06b6d4; 
+        }
+
+        nav .logo {
+            color: #22c55e; 
+            font-size: 1.6rem;
+            font-weight: 800;
+            letter-spacing: 1px;
+        }
+
+        nav .logo span { color: #06b6d4; }
+
+        nav ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            display: flex;
+        }
+
+        nav ul li { margin-left: 1.5rem; }
+
+        nav ul li a {
+            color: #94a3b8;
+            text-decoration: none;
+            font-weight: 600;
+            transition: color 0.3s;
+        }
+
+        nav ul li a:hover, nav ul li a.admin-link { color: #06b6d4; }
+        nav ul li a.admin-link { border: 1px solid #06b6d4; padding: 0.3rem 0.7rem; border-radius: 4px; }
+        nav ul li a.admin-link:hover { background: #06b6d4; color: #0f172a; }
+
+        /* Hero / Header Section */
+        header {
+            background: linear-gradient(135deg, #1e3a8a, #0f172a);
+            color: white;
+            text-align: center;
+            padding: 5rem 2rem;
+            position: relative;
+        }
+
+        header h1 { margin: 0; font-size: 3rem; font-weight: 800; text-transform: uppercase; }
+        header h1 span { color: #22c55e; }
+        header p { font-size: 1.25rem; margin-top: 1rem; color: #94a3b8; max-width: 600px; margin-left: auto; margin-right: auto; }
+
+        .container { max-width: 1100px; margin: 3rem auto; padding: 0 1.5rem; }
+
+        section {
+            background: #1e293b;
+            padding: 2.5rem;
+            border-radius: 12px;
+            margin-bottom: 2.5rem;
+            border: 1px solid #334155;
+        }
+
+        section h2 { color: #ffffff; font-size: 1.8rem; margin-top: 0; display: flex; align-items: center; gap: 10px; }
+        section h2::before { content: ''; display: inline-block; width: 6px; height: 24px; background-color: #22c55e; border-radius: 4px; }
+
+        /* Features Grid */
+        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.5rem; margin-top: 2rem; }
+        .card { background: #0f172a; padding: 1.75rem; border-radius: 8px; border-top: 4px solid #06b6d4; }
+        .card h3 { margin-top: 0; color: #ffffff; }
+
+        footer { text-align: center; padding: 2.5rem; background-color: #0f172a; color: #64748b; border-top: 1px solid #334155; margin-top: 5rem; }
+        footer a { color: #94a3b8; text-decoration: none; }
+        footer a:hover { color: #ef4444; }
+    </style>
+</head>
+<body>
+
+    <!-- Navigation Bar -->
+    <nav>
+        <div class="logo">Wii<span>Jump</span></div>
+        <ul>
+            <li><a href="#overview">Overview</a></li>
+            <li><a href="#features">Features</a></li>
+            <li><a href="admin.html" class="admin-link">Admin Dashboard →</a></li>
+        </ul>
+    </nav>
+
+    <!-- Header / Hero Section -->
+    <header>
+        <h1>Wii<span>Jump</span></h1>
+        <p>An interactive, motion-controlled capstone system designed to track, analyze, and gamify vertical jump mechanics in real-time.</p>
+    </header>
+
+    <div class="container">
+        <!-- Project Overview -->
+        <section id="overview">
+            <h2>Project Overview</h2>
+            <p>WiiJump bridges the gap between physical fitness and immersive gaming environments. Built as our senior capstone project, this platform leverages hardware motion sensors to register precise user jump heights, hang-time data, and landing impact forces.</p>
+        </section>
+
+        <!-- System Features -->
+        <section id="features">
+            <h2>Core Features</h2>
+            <div class="grid">
+                <div class="card">
+                    <h3>Precision Motion Tracking</h3>
+                    <p>Utilizes signal processing to filter noise and map physical jumps cleanly onto our virtual display interface.</p>
+                </div>
+                <div class="card">
+                    <h3>Real-Time Analytics</h3>
+                    <p>Instantly calculates vertical leap distance, continuous velocity curves, and estimated caloric burn metrics.</p>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <footer>
+        <p>&copy; 2026 WiiJump Capstone Team. | <a href="admin.html">System Administrator Access</a></p>
+    </footer>
+
+</body>
+</html>
