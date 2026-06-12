@@ -21,7 +21,7 @@
             background-color: #111827;
             padding: 2rem 1.5rem;
             box-sizing: border-box;
-            border-right: 2px solid #ef4444; /* Crimson Admin Identifier Accent */
+            border-right: 2px solid #ef4444; 
             display: flex;
             flex-direction: column;
         }
@@ -49,6 +49,7 @@
             display: block;
             padding: 0.5rem;
             border-radius: 4px;
+            cursor: pointer;
             transition: all 0.2s;
         }
 
@@ -62,6 +63,10 @@
             color: #f87171;
             border: 1px solid #ef4444;
             text-align: center;
+            text-decoration: none;
+            padding: 0.5rem;
+            border-radius: 4px;
+            font-weight: bold;
         }
         .sidebar .exit-link:hover {
             background-color: #ef4444;
@@ -86,6 +91,10 @@
 
         .header-bar h1 { margin: 0; font-size: 2rem; color: #ffffff; }
 
+        /* Content Sections Toggle */
+        .tab-content { display: none; }
+        .tab-content.active-view { display: block; }
+
         /* Metrics Display Grid */
         .metrics-grid {
             display: grid;
@@ -105,15 +114,42 @@
         .metric-card h3 { margin: 0; font-size: 0.85rem; color: #9ca3af; text-transform: uppercase; letter-spacing: 0.5px; }
         .metric-card p { margin: 0.5rem 0 0 0; font-size: 1.8rem; font-weight: bold; color: #ffffff; }
 
-        /* Data Tables */
+        /* Data Tables & Interactive Input Box */
         .table-container {
             background: #1f2937;
             border-radius: 8px;
             padding: 1.5rem;
             box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.2);
+            margin-top: 2rem;
         }
 
         .table-container h2 { margin-top: 0; font-size: 1.3rem; color: #ffffff; }
+
+        .input-group {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 1.5rem;
+        }
+
+        input[type="text"] {
+            flex: 1;
+            padding: 0.75rem;
+            background: #0b0f19;
+            border: 1px solid #374151;
+            color: white;
+            border-radius: 4px;
+        }
+
+        .btn-submit {
+            background-color: #ef4444;
+            color: white;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 4px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        .btn-submit:hover { background-color: #dc2626; }
 
         table {
             width: 100%;
@@ -142,10 +178,8 @@
     <div class="sidebar">
         <h2>WiiJump Panel</h2>
         <ul>
-            <li><a href="#" class="active">System Telemetry</a></li>
-            <li><a href="#">Sensor Nodes</a></li>
-            <li><a href="#">Database Status</a></li>
-            <li><a href="#">User Permissions</a></li>
+            <li><a id="tab1" class="active" onclick="switchTab('telemetry-section', 'tab1')">System Telemetry</a></li>
+            <li><a id="tab2" onclick="switchTab('nodes-section', 'tab2')">Sensor Nodes</a></li>
         </ul>
         <a href="index.html" class="exit-link">← Return to Site</a>
     </div>
@@ -157,57 +191,154 @@
             <span style="color: #9ca3af;">Role: <strong>Global Administrator</strong></span>
         </div>
 
-        <!-- System Analytics Row -->
-        <div class="metrics-grid">
-            <div class="metric-card">
-                <h3>Bluetooth Node Connections</h3>
-                <p style="color: #4ade80;">3 Online / 0 Offline</p>
+        <!-- TAB 1: TELEMETRY SECTION -->
+        <div id="telemetry-section" class="tab-content active-view">
+            <!-- System Analytics Row -->
+            <div class="metrics-grid">
+                <div class="metric-card">
+                    <h3>Bluetooth Node Connections</h3>
+                    <p style="color: #4ade80;" id="live-nodes">3 Online / 0 Offline</p>
+                </div>
+                <div class="metric-card">
+                    <h3>Incoming Pipeline Latency</h3>
+                    <p id="live-latency">11.2 ms</p>
+                </div>
+                <div class="metric-card">
+                    <h3>Total Database Sessions</h3>
+                    <p id="live-sessions">1,482 Logs</p>
+                </div>
             </div>
-            <div class="metric-card">
-                <h3>Incoming Pipeline Latency</h3>
-                <p>11.2 ms</p>
-            </div>
-            <div class="metric-card">
-                <h3>Total Database Sessions</h3>
-                <p>1,482 Logs</p>
+
+            <!-- Error & Runtime System Logs -->
+            <div class="table-container">
+                <h2>Critical Subsystem Activity Logs</h2>
+                
+                <!-- Mock Log Sender Subsystem -->
+                <div class="input-group">
+                    <input type="text" id="log-message" placeholder="Type a simulated admin error or notification alert message...">
+                    <button class="btn-submit" onclick="injectCustomLog()">Inject Log Entry</button>
+                </div>
+
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Timestamp</th>
+                            <th>Subsystem Component</th>
+                            <th>Severity Event</th>
+                            <th>Log Execution Output</th>
+                        </tr>
+                    </thead>
+                    <tbody id="log-table-body">
+                        <tr>
+                            <td>2026-06-12 19:40</td>
+                            <td>IMU Hardware Broker</td>
+                            <td><span class="status-badge status-good">SUCCESS</span></td>
+                            <td>Handshake completed successfully with Remote Device Node #1</td>
+                        </tr>
+                        <tr>
+                            <td>2026-06-12 18:12</td>
+                            <td>Data Parsing Module</td>
+                            <td><span class="status-badge status-warn">WARNING</span></td>
+                            <td>High-frequency accelerometer packet drop detected during calculation sequence</td>
+                        </tr>
+                    </tbody>
+                </table>
             </div>
         </div>
 
-        <!-- Error & Runtime System Logs -->
-        <div class="table-container">
-            <h2>Critical Subsystem Activity Logs</h2>
-            <table>
-                <thead>
-                    <tr>
-                        <th>Timestamp</th>
-                        <th>Subsystem Component</th>
-                        <th>Severity Event</th>
-                        <th>Log Execution Output</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>2026-06-12 19:40</td>
-                        <td>IMU Hardware Broker</td>
-                        <td><span class="status-badge status-good">SUCCESS</span></td>
-                        <td>Handshake completed successfully with Remote Device Node #1</td>
-                    </tr>
-                    <tr>
-                        <td>2026-06-12 18:12</td>
-                        <td>Data Parsing Module</td>
-                        <td><span class="status-badge status-warn">WARNING</span></td>
-                        <td>High-frequency accelerometer packet drop detected during calculation sequence</td>
-                    </tr>
-                    <tr>
-                        <td>2026-06-12 15:45</td>
-                        <td>WebSocket Server</td>
-                        <td><span class="status-badge status-good">SUCCESS</span></td>
-                        <td>Live stream port pipeline opened on port 8080</td>
-                    </tr>
-                </tbody>
-            </table>
+        <!-- TAB 2: HARDWARE NODES SECTION -->
+        <div id="nodes-section" class="tab-content">
+            <div class="table-container">
+                <h2>Connected Accelerometer Hardware Nodes</h2>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Node ID</th>
+                            <th>MAC Address</th>
+                            <th>Battery Charge</th>
+                            <th>Signal Index (RSSI)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>WJ_NODE_01</td>
+                            <td>00:1A:7D:DA:71:11</td>
+                            <td>94%</td>
+                            <td style="color: #4ade80;">Excellent (-48dBm)</td>
+                        </tr>
+                        <tr>
+                            <td>WJ_NODE_02</td>
+                            <td>00:1A:7D:DA:71:12</td>
+                            <td>81%</td>
+                            <td style="color: #4ade80;">Good (-55dBm)</td>
+                        </tr>
+                        <tr>
+                            <td>WJ_NODE_03</td>
+                            <td>00:1A:7D:DA:71:13</td>
+                            <td>42%</td>
+                            <td style="color: #fde047;">Weak (-78dBm)</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
         </div>
+
     </div>
 
+    <!-- Live Execution Logic Script -->
+    <script>
+        // Tab Layout Engine
+        function switchTab(sectionId, tabId) {
+            // Hide all views
+            document.querySelectorAll('.tab-content').forEach(section => {
+                section.classList.remove('active-view');
+            });
+            // Deactivate all links
+            document.querySelectorAll('.sidebar ul li a').forEach(link => {
+                link.classList.remove('active');
+            });
+            // Activate current selections
+            document.getElementById(sectionId).classList.add('active-view');
+            document.getElementById(tabId).classList.add('active');
+        }
+
+        // Live Simulated Analytics Engine
+        setInterval(() => {
+            // Fluctuating Latency Simulation
+            const variantLatency = (10 + Math.random() * 4).toFixed(1);
+            document.getElementById('live-latency').innerText = `${variantLatency} ms`;
+
+            // Slowly increment database session count simulation
+            if(Math.random() > 0.7) {
+                const currentSessions = parseInt(document.getElementById('live-sessions').innerText.replace(',', ''));
+                document.getElementById('live-sessions').innerText = (currentSessions + 1).toLocaleString();
+            }
+        }, 2500);
+
+        // Form Injection Engine
+        function injectCustomLog() {
+            const userMsg = document.getElementById('log-message').value.trim();
+            if(!userMsg) {
+                alert("Please type a message output first!");
+                return;
+            }
+
+            const currentTime = new Date().toISOString().slice(0, 19).replace('T', ' ').substring(0, 16);
+            const tableBody = document.getElementById('log-table-body');
+
+            // Generate clean row element structure
+            const newRow = document.createElement('tr');
+            newRow.innerHTML = `
+                <td>${currentTime}</td>
+                <td>Admin Terminal</td>
+                <td><span class="status-badge status-warn">USER_LOG</span></td>
+                <td>${userMsg}</td>
+            `;
+
+            // Insert matching row inside document tree hierarchy
+            tableBody.insertBefore(newRow, tableBody.firstChild);
+            document.getElementById('log-message').value = ""; // Clean context field entry container
+        }
+    </script>
 </body>
 </html>
